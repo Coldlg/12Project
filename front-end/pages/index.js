@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
-export default function Home() {
+export default function Users() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,8 +15,6 @@ export default function Home() {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("http://localhost:4000/users");
-        console.log(response);
-
         setPosts(response.data);
         setError(null);
       } catch (err) {
@@ -28,8 +28,8 @@ export default function Home() {
   // Post request
   const handleCreatePost = async () => {
     try {
-      await axios.post("http://localhost:4000/users", {
-        name,
+      await axios.post("http://localhost:4000/createUsers", {
+        username: name,
         email,
         password,
       });
@@ -44,47 +44,33 @@ export default function Home() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="m-4 font-bold">Create a New Post</h1>
-
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Enter post title"
-        className="p-4 mr-4 text-black"
-      />
-      <input
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter post title"
-        className="p-4 mr-4 text-black"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Enter post title"
-        className="p-4 mr-4 text-black"
-      />
-      {error && <p>{error}</p>}
-
-      <button onClick={handleCreatePost} className="p-4 border rounded-lg">
-        Create Post
-      </button>
-
-      <h2 className="m-2 font-bold">Posts</h2>
-      <ul>
-        {posts.map((post) => (
-          <div key={post.id} className="border rounded-lg m-4 p-4">
-            <p>{post.username}</p>
-            <p>{post.email}</p>
-            <p>{post.password}</p>
-            <p>{post.created_at}</p>
-          </div>
-        ))}
-      </ul>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-200 via-pink-300 to-purple-400 font-sans flex items-center justify-center">
+      <div className="w-full h-full text-white flex items-center justify-center space-x-10">
+        <button
+          className="px-10 py-6 bg-purple-500 hover:bg-purple-400 rounded-lg transition-all"
+          onClick={() => router.push("/users")}
+        >
+          Users
+        </button>
+        <button
+          className="px-10 py-6 bg-purple-500 hover:bg-purple-400 rounded-lg transition-all"
+          onClick={() => router.push("/orders")}
+        >
+          Orders
+        </button>
+        <button
+          className="px-10 py-6 bg-purple-500 hover:bg-purple-400 rounded-lg transition-all"
+          onClick={() => router.push("/products")}
+        >
+          Product
+        </button>
+        <button
+          className="px-10 py-6 bg-purple-500 hover:bg-purple-400 rounded-lg transition-all"
+          onClick={() => router.push("/reviews")}
+        >
+          Reviews
+        </button>
+      </div>
     </div>
   );
 }
